@@ -1,0 +1,7 @@
+ld-common-alloy-portlet.xml
+build-common-portlet.xml
+build.xml
+create.bat
+create.sh
+opencps-portlet/
+vt_svs-portlet/
