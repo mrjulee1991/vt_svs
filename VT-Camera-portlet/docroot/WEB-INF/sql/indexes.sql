@@ -1,0 +1,1 @@
+create index IX_9ACBF453 on VT_Customer (fullName);

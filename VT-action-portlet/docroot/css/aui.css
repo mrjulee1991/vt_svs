@@ -1,0 +1,6 @@
+@CHARSET "ISO-8859-1";
+@import "css/bs3/bootstrap";
+
+@import "css/bs3/bs2_extender";
+
+@import "css/bs3/bs_liferay_fixes";		

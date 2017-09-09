@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.vt.portlet.camera.model.Customer">
+		<field name="customerId" type="long" />
+		<field name="customerGroup" type="long" />
+		<field name="customerType" type="long" />
+		<field name="fullName" type="String" />
+		<field name="birthday" type="Date" />
+		<field name="sex" type="long" />
+		<field name="nationalId" type="long" />
+		<field name="address" type="String" />
+		<field name="description" type="String" />
+		<field name="identifyNo" type="String" />
+		<field name="issueDate" type="Date" />
+		<field name="issuePlace" type="String" />
+	</model>
+	<model name="com.vt.portlet.camera.model.CustomerService">
+		<field name="customerServiceId" type="long" />
+		<field name="customerId" type="long" />
+		<field name="deployName" type="String" />
+		<field name="appointDate" type="Date" />
+		<field name="serviceType" type="long" />
+		<field name="address" type="String" />
+		<field name="deployType" type="long" />
+		<field name="packageType" type="String" />
+		<field name="isdnNo" type="String" />
+		<field name="accountType" type="long" />
+	</model>
+</model-hints>

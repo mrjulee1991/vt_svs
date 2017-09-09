@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
+<service-builder package-path="com.vt.portlet.camera">
+	<author>MrNet</author>
+	<namespace>VT</namespace>
+
+	<entity name="Customer" table="vt_Customer" local-service="true" remote-service="false"
+		data-source="vtDataSource" session-factory="vtSessionFactory" tx-manager="vtTransactionManager">
+
+		<column name="customerId" type="long" primary="true" />
+
+		<column name="customerGroup" type="long" />
+		<column name="customerType" type="long" />
+
+		<column name="fullName" type="String" />
+		<column name="birthday" type="Date" />
+		<column name="sex" type="long" />
+		<column name="nationalId" type="long" />
+		<column name="address" type="String" />
+		<column name="description" type="String" />
+
+		<column name="identifyNo" type="String" />
+		<column name="issueDate" type="Date" />
+		<column name="issuePlace" type="String" />
+
+		<order by="asc">
+			<order-column name="fullName" />
+		</order>
+
+		<finder name="fullName" return-type="Collection">
+			<finder-column name="fullName" />
+		</finder>
+	</entity>
+
+	<entity name="CustomerService" table="vt_Customer_service" local-service="true" remote-service="false"
+		data-source="vtDataSource" session-factory="vtSessionFactory" tx-manager="vtTransactionManager">
+
+		<column name="customerServiceId" type="long" primary="true" />
+
+		<column name="customerId" type="long" />
+
+		<column name="deployName" type="String" />
+		<column name="appointDate" type="Date" />
+
+		<column name="serviceType" type="long" />
+		<column name="address" type="String" />
+		<column name="deployType" type="long" />
+
+		<column name="packageType" type="String" />
+		<column name="isdnNo" type="String" />
+
+		<column name="accountType" type="long" />
+
+	</entity>
+
+</service-builder>
