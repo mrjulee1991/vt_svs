@@ -7,7 +7,7 @@
 	<class name="com.vt.portlet.camera.model.impl.CustomerImpl" table="vt_Customer">
 		<cache usage="read-write" />
 		<id name="customerId" type="long">
-			<generator class="assigned" />
+			<generator class="increment" />
 		</id>
 		<property name="customerGroup" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="customerType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -24,7 +24,7 @@
 	<class name="com.vt.portlet.camera.model.impl.CustomerServiceImpl" table="vt_Customer_service">
 		<cache usage="read-write" />
 		<id name="customerServiceId" type="long">
-			<generator class="assigned" />
+			<generator class="increment" />
 		</id>
 		<property name="customerId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="deployName" type="com.liferay.portal.dao.orm.hibernate.StringType" />

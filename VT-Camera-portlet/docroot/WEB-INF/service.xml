@@ -1,56 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
+
 <service-builder package-path="com.vt.portlet.camera">
 	<author>MrNet</author>
 	<namespace>VT</namespace>
-
-	<entity name="Customer" table="vt_Customer" local-service="true" remote-service="false"
-		data-source="vtDataSource" session-factory="vtSessionFactory" tx-manager="vtTransactionManager">
-
-		<column name="customerId" type="long" primary="true" />
-
-		<column name="customerGroup" type="long" />
-		<column name="customerType" type="long" />
-
-		<column name="fullName" type="String" />
-		<column name="birthday" type="Date" />
-		<column name="sex" type="long" />
-		<column name="nationalId" type="long" />
-		<column name="address" type="String" />
-		<column name="description" type="String" />
-
-		<column name="identifyNo" type="String" />
-		<column name="issueDate" type="Date" />
-		<column name="issuePlace" type="String" />
-
+	<entity name="Customer" table="vt_Customer" local-service="true" remote-service="false" data-source="vtDataSource" session-factory="vtSessionFactory" tx-manager="vtTransactionManager">
+		<column name="customerId" type="long" primary="true" id-type="increment"></column>
+		<column name="customerGroup" type="long"></column>
+		<column name="customerType" type="long"></column>
+		<column name="fullName" type="String"></column>
+		<column name="birthday" type="Date"></column>
+		<column name="sex" type="long"></column>
+		<column name="nationalId" type="long"></column>
+		<column name="address" type="String"></column>
+		<column name="description" type="String"></column>
+		<column name="identifyNo" type="String"></column>
+		<column name="issueDate" type="Date"></column>
+		<column name="issuePlace" type="String"></column>
 		<order by="asc">
-			<order-column name="fullName" />
+			<order-column name="fullName"></order-column>
 		</order>
-
 		<finder name="fullName" return-type="Collection">
-			<finder-column name="fullName" />
+			<finder-column name="fullName"></finder-column>
 		</finder>
 	</entity>
-
-	<entity name="CustomerService" table="vt_Customer_service" local-service="true" remote-service="false"
-		data-source="vtDataSource" session-factory="vtSessionFactory" tx-manager="vtTransactionManager">
-
-		<column name="customerServiceId" type="long" primary="true" />
-
-		<column name="customerId" type="long" />
-
-		<column name="deployName" type="String" />
-		<column name="appointDate" type="Date" />
-
-		<column name="serviceType" type="long" />
-		<column name="address" type="String" />
-		<column name="deployType" type="long" />
-
-		<column name="packageType" type="String" />
-		<column name="isdnNo" type="String" />
-
-		<column name="accountType" type="long" />
-
+	<entity name="CustomerService" table="vt_Customer_service" local-service="true" remote-service="false" data-source="vtDataSource" session-factory="vtSessionFactory" tx-manager="vtTransactionManager">
+		<column name="customerServiceId" type="long" primary="true" id-type="increment"></column>
+		<column name="customerId" type="long"></column>
+		<column name="deployName" type="String"></column>
+		<column name="appointDate" type="Date"></column>
+		<column name="serviceType" type="long"></column>
+		<column name="address" type="String"></column>
+		<column name="deployType" type="long"></column>
+		<column name="packageType" type="String"></column>
+		<column name="isdnNo" type="String"></column>
+		<column name="accountType" type="long"></column>
 	</entity>
-
 </service-builder>

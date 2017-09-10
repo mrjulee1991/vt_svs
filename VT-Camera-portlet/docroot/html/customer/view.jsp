@@ -9,8 +9,8 @@
 	<aui:row>
 		<aui:col span="4">
 			<aui:select name="customerGroup" label="Nhóm loại khách hàng" >
-				<aui:option label="CMT" value="1" />
-				<aui:option label="Hộ chiếu" value="2" />
+				<aui:option label="Cá nhân trong nước" value="1" />
+				<aui:option label="Doanh nghiệp" value="2" />
 			</aui:select>
 		</aui:col>
 		<aui:col span="4">
@@ -19,12 +19,12 @@
 				<aui:option label="Doanh nghiệp" value="2" />
 			</aui:select>
 		</aui:col>
-
 	</aui:row>
 
 	<aui:row>
 		<aui:col span="4">
-			<aui:input name="identifyNo" label="CMT" />
+			<aui:input name="identifyNo" label="CMT">
+			</aui:input>
 		</aui:col>
 		<aui:col span="4">
 			<aui:input name="issuePlace" label="Nơi cấp" />
@@ -45,7 +45,10 @@
 			<aui:input name="birthday" label="Ngày sinh" />
 		</aui:col>
 		<aui:col span="4">
-			<aui:input name="sex" label="Giới tính" />
+			<aui:select name="sex" label="Giới tính" >
+				<aui:option label="Nam" value="1" />
+				<aui:option label="Nữ" value="2" />
+			</aui:select>
 		</aui:col>
 	</aui:row>
 
@@ -63,57 +66,65 @@
 
 </aui:form>
 
-<portlet:actionURL var="updateURL" >
-	<portlet:param name="action" value="submitForm"/>
-</portlet:actionURL>
+<aui:script>
 
-<aui:button-row>
-	<aui:button onClick='<%= renderResponse.getNamespace() + "processAction();" %>' type="submit" />
-</aui:button-row>
+Liferay.on('_submitAction',function(event) {
 
+	AUI().ready('aui-form-validator', 'aui-overlay-context-panel', function(A) {
 
- <aui:script>
+		var validator1 = new A.FormValidator({
 
-	function <portlet:namespace />processAction() {
+			boundingBox: '#<portlet:namespace />fm',
+			validateOnBlur: true,
+			selectText: true,
 
-		Liferay.fire('_submitAction', {});
+			rules: {
+				<portlet:namespace />identifyNo: {
+					required: true,
+					number: true
+				}
+// 				<portlet:namespace />issuePlace: {
+// 					required: true
+// 				},
+// 				<portlet:namespace />issueDate: {
+// 					required: true
+// 				}
+			},
 
-	}
+			fieldStrings: {
+				<portlet:namespace />identifyNo: {
+					required: 'Bạn phải nhập số CMT',
+					number: 'Chỉ dc nhập số'
+				}
+// 				<portlet:namespace />issuePlace: {
+// 					required: 'Bạn phải nhập nơi cấp CMT'
+// 				},
+// 				<portlet:namespace />issueDate: {
+// 					required: 'Bạn phải nhập ngày cấp CMT'
+// 				}
+			}
 
-	var arr = "";
+		});
 
-	Liferay.on('_callBackAction',function(event) {
+		validator1.validate();
 
-		alert("callBackAction");
-
-		var user_form = event.user_form;
-		var user_namespace = event.user_namespace;
-
-		var rss_form = event.rss_form;
-
-		if(user_form != 'undefined' && user_form != null && user_form != "") {
-			var emailAddress = user_form._vnptuser_WAR_vnptuserportlet_emailAddress;
-			console.log("emailAddress =  " + emailAddress);
-			console.log("user_namespace :" + user_namespace);
-
-			$.ajax({
-				   url: '<%= updateURL.toString() %>',
-				   data: {
-					   <portlet:namespace />namespace : user_namespace,
-				       <portlet:namespace />user_form : JSON.stringify(user_form)
-				   },
-				   error: function() {
-				     // $('#info').html('<p>An error has occurred</p>');
-				   },
-				   dataType: 'jsonp',
-				   success: function(data) {
-				     console.log("success");
-				   },
-				   type: 'POST'
-				});
+		if(validator1.hasErrors()){
+			event.halt();
 		}
+		else {
+		 	var data = $('#<portlet:namespace/>fm').serializeArray().reduce(function(obj, item) {
+		 	    obj[item.name] = item.value;
+		 	    return obj;
+		 	}, {});
+
+			Liferay.fire('_callBackAction', {
+	 			customer_form : data,
+	 			customer_namespace : '<portlet:namespace/>'
+	 		});
+		}
+
 	});
 
-
+});
 
 </aui:script>

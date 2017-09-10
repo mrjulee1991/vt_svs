@@ -3,7 +3,8 @@
 
 <display>
 	<category name="category.sample">
-		<portlet id="VT-Camera" />
-		<portlet id="VT-Service" />
+		<portlet id="VT-Camera"></portlet>
+		<portlet id="VT-Service"></portlet>
+		<portlet id="VT-Action"></portlet>
 	</category>
 </display>

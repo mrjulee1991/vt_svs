@@ -21,18 +21,29 @@
 
 	<aui:row>
 		<aui:col span="8">
-			<aui:field-wrapper name="serviceField">
-				<aui:input inlineLabel="right" name="serviceType" type="radio" value="1" label="Camera" />
-				<aui:input inlineLabel="right" name="serviceType" type="radio" value="2" label="Công nghệ"  />
-				<aui:input inlineLabel="right" name="serviceType" type="radio" value="3" label="Quang GPON"  />
+			<aui:field-wrapper label="Dịch vụ">
+				<aui:row>
+					<aui:col span="4">
+						<aui:input inlineLabel="right" name="serviceType" type="radio" value="1" label="Camera" />
+					</aui:col>
+					<aui:col span="4">
+						<aui:input inlineLabel="right" name="serviceType" type="radio" value="2" label="Công nghệ"  />
+					</aui:col>
+					<aui:col span="4">
+						<aui:input inlineLabel="right" name="serviceType" type="radio" value="3" label="Quang GPON"  />
+					</aui:col>
+				</aui:row>
 			</aui:field-wrapper>
-		</aui:col>
-		<aui:col span="4">
-			<aui:input name="duongDay" label="Đường dây" />
 		</aui:col>
 	</aui:row>
 
 	<aui:row>
+		<aui:col span="4">
+			<aui:input name="address" label="Địa chỉ" />
+		</aui:col>
+		<aui:col span="4">
+			<aui:input name="duongDay" label="Đường dây" />
+		</aui:col>
 		<aui:col span="4">
 			<aui:select name="customerGroup" label="Hình thức TK" >
 				<aui:option label="Viettel triển khai" value="1" />
@@ -57,3 +68,65 @@
 	</aui:row>
 
 </aui:form>
+
+
+<aui:script>
+
+Liferay.on('_submitAction',function(event) {
+
+	AUI().ready('aui-form-validator', 'aui-overlay-context-panel', function(A) {
+
+		var validator1 = new A.FormValidator({
+
+			boundingBox: '#<portlet:namespace />fm',
+			validateOnBlur: true,
+			selectText: true,
+
+			rules: {
+				<portlet:namespace />address: {
+					required: true
+				},
+				<portlet:namespace />customerGroup: {
+					required: true
+				},
+				<portlet:namespace />packageType: {
+					required: true
+				}
+			},
+
+			fieldStrings: {
+				<portlet:namespace />address: {
+					required: 'Bạn phải nhập địa chỉ triển khai'
+				},
+				<portlet:namespace />customerGroup: {
+					required: 'Bạn phải chọn hình thức triển khai'
+				},
+				<portlet:namespace />packageType: {
+					required: 'Bạn phải nhập gói cước'
+				}
+			}
+
+		});
+
+// 		validator1.validate();
+
+		if(validator1.hasErrors()){
+			event.halt();
+		}
+		else {
+		 	var data = $('#<portlet:namespace/>fm').serializeArray().reduce(function(obj, item) {
+		 	    obj[item.name] = item.value;
+		 	    return obj;
+		 	}, {});
+
+			Liferay.fire('_callBackAction', {
+	 			service_form : data,
+	 			service_namespace : '<portlet:namespace/>'
+	 		});
+		}
+
+	});
+
+});
+
+</aui:script>
