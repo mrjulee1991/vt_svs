@@ -14,7 +14,13 @@
 
 package com.vt.portlet.camera.service.impl;
 
+import java.util.List;
+
+import com.liferay.portal.kernel.exception.SystemException;
+import com.vt.portlet.camera.model.CustomerService;
+import com.vt.portlet.camera.service.CustomerLocalServiceUtil;
 import com.vt.portlet.camera.service.base.CustomerServiceLocalServiceBaseImpl;
+import com.vt.portlet.camera.service.persistence.CustomerServiceUtil;
 
 /**
  * The implementation of the customer service local service.
@@ -37,4 +43,9 @@ public class CustomerServiceLocalServiceImpl
 	 *
 	 * Never reference this interface directly. Always use {@link com.vt.portlet.camera.service.CustomerServiceLocalServiceUtil} to access the customer service local service.
 	 */
+	
+	public List<CustomerService> findBycustomerId(long customerId) throws SystemException {
+		
+		return CustomerServiceUtil.findBycustomerId(customerId);
+	}
 }

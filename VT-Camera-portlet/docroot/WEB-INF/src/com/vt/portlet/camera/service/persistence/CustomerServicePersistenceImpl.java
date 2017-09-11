@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
+import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -30,6 +31,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
@@ -82,6 +84,501 @@ public class CustomerServicePersistenceImpl extends BasePersistenceImpl<Customer
 	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(CustomerServiceModelImpl.ENTITY_CACHE_ENABLED,
 			CustomerServiceModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_CUSTOMERID =
+		new FinderPath(CustomerServiceModelImpl.ENTITY_CACHE_ENABLED,
+			CustomerServiceModelImpl.FINDER_CACHE_ENABLED,
+			CustomerServiceImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findBycustomerId",
+			new String[] {
+				Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CUSTOMERID =
+		new FinderPath(CustomerServiceModelImpl.ENTITY_CACHE_ENABLED,
+			CustomerServiceModelImpl.FINDER_CACHE_ENABLED,
+			CustomerServiceImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBycustomerId",
+			new String[] { Long.class.getName() },
+			CustomerServiceModelImpl.CUSTOMERID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_CUSTOMERID = new FinderPath(CustomerServiceModelImpl.ENTITY_CACHE_ENABLED,
+			CustomerServiceModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBycustomerId",
+			new String[] { Long.class.getName() });
+
+	/**
+	 * Returns all the customer services where customerId = &#63;.
+	 *
+	 * @param customerId the customer ID
+	 * @return the matching customer services
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<CustomerService> findBycustomerId(long customerId)
+		throws SystemException {
+		return findBycustomerId(customerId, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the customer services where customerId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.vt.portlet.camera.model.impl.CustomerServiceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param customerId the customer ID
+	 * @param start the lower bound of the range of customer services
+	 * @param end the upper bound of the range of customer services (not inclusive)
+	 * @return the range of matching customer services
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<CustomerService> findBycustomerId(long customerId, int start,
+		int end) throws SystemException {
+		return findBycustomerId(customerId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the customer services where customerId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.vt.portlet.camera.model.impl.CustomerServiceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param customerId the customer ID
+	 * @param start the lower bound of the range of customer services
+	 * @param end the upper bound of the range of customer services (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching customer services
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<CustomerService> findBycustomerId(long customerId, int start,
+		int end, OrderByComparator orderByComparator) throws SystemException {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CUSTOMERID;
+			finderArgs = new Object[] { customerId };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_CUSTOMERID;
+			finderArgs = new Object[] { customerId, start, end, orderByComparator };
+		}
+
+		List<CustomerService> list = (List<CustomerService>)FinderCacheUtil.getResult(finderPath,
+				finderArgs, this);
+
+		if ((list != null) && !list.isEmpty()) {
+			for (CustomerService customerService : list) {
+				if ((customerId != customerService.getCustomerId())) {
+					list = null;
+
+					break;
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 3));
+			}
+			else {
+				query = new StringBundler(3);
+			}
+
+			query.append(_SQL_SELECT_CUSTOMERSERVICE_WHERE);
+
+			query.append(_FINDER_COLUMN_CUSTOMERID_CUSTOMERID_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(CustomerServiceModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(customerId);
+
+				if (!pagination) {
+					list = (List<CustomerService>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = new UnmodifiableList<CustomerService>(list);
+				}
+				else {
+					list = (List<CustomerService>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
+
+				cacheResult(list);
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first customer service in the ordered set where customerId = &#63;.
+	 *
+	 * @param customerId the customer ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching customer service
+	 * @throws com.vt.portlet.camera.NoSuchCustomerServiceException if a matching customer service could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public CustomerService findBycustomerId_First(long customerId,
+		OrderByComparator orderByComparator)
+		throws NoSuchCustomerServiceException, SystemException {
+		CustomerService customerService = fetchBycustomerId_First(customerId,
+				orderByComparator);
+
+		if (customerService != null) {
+			return customerService;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("customerId=");
+		msg.append(customerId);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchCustomerServiceException(msg.toString());
+	}
+
+	/**
+	 * Returns the first customer service in the ordered set where customerId = &#63;.
+	 *
+	 * @param customerId the customer ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching customer service, or <code>null</code> if a matching customer service could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public CustomerService fetchBycustomerId_First(long customerId,
+		OrderByComparator orderByComparator) throws SystemException {
+		List<CustomerService> list = findBycustomerId(customerId, 0, 1,
+				orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last customer service in the ordered set where customerId = &#63;.
+	 *
+	 * @param customerId the customer ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching customer service
+	 * @throws com.vt.portlet.camera.NoSuchCustomerServiceException if a matching customer service could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public CustomerService findBycustomerId_Last(long customerId,
+		OrderByComparator orderByComparator)
+		throws NoSuchCustomerServiceException, SystemException {
+		CustomerService customerService = fetchBycustomerId_Last(customerId,
+				orderByComparator);
+
+		if (customerService != null) {
+			return customerService;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("customerId=");
+		msg.append(customerId);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchCustomerServiceException(msg.toString());
+	}
+
+	/**
+	 * Returns the last customer service in the ordered set where customerId = &#63;.
+	 *
+	 * @param customerId the customer ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching customer service, or <code>null</code> if a matching customer service could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public CustomerService fetchBycustomerId_Last(long customerId,
+		OrderByComparator orderByComparator) throws SystemException {
+		int count = countBycustomerId(customerId);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<CustomerService> list = findBycustomerId(customerId, count - 1,
+				count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the customer services before and after the current customer service in the ordered set where customerId = &#63;.
+	 *
+	 * @param customerServiceId the primary key of the current customer service
+	 * @param customerId the customer ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next customer service
+	 * @throws com.vt.portlet.camera.NoSuchCustomerServiceException if a customer service with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public CustomerService[] findBycustomerId_PrevAndNext(
+		long customerServiceId, long customerId,
+		OrderByComparator orderByComparator)
+		throws NoSuchCustomerServiceException, SystemException {
+		CustomerService customerService = findByPrimaryKey(customerServiceId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			CustomerService[] array = new CustomerServiceImpl[3];
+
+			array[0] = getBycustomerId_PrevAndNext(session, customerService,
+					customerId, orderByComparator, true);
+
+			array[1] = customerService;
+
+			array[2] = getBycustomerId_PrevAndNext(session, customerService,
+					customerId, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected CustomerService getBycustomerId_PrevAndNext(Session session,
+		CustomerService customerService, long customerId,
+		OrderByComparator orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByFields().length * 6));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		query.append(_SQL_SELECT_CUSTOMERSERVICE_WHERE);
+
+		query.append(_FINDER_COLUMN_CUSTOMERID_CUSTOMERID_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(CustomerServiceModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(customerId);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(customerService);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<CustomerService> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the customer services where customerId = &#63; from the database.
+	 *
+	 * @param customerId the customer ID
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public void removeBycustomerId(long customerId) throws SystemException {
+		for (CustomerService customerService : findBycustomerId(customerId,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+			remove(customerService);
+		}
+	}
+
+	/**
+	 * Returns the number of customer services where customerId = &#63;.
+	 *
+	 * @param customerId the customer ID
+	 * @return the number of matching customer services
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public int countBycustomerId(long customerId) throws SystemException {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_CUSTOMERID;
+
+		Object[] finderArgs = new Object[] { customerId };
+
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_CUSTOMERSERVICE_WHERE);
+
+			query.append(_FINDER_COLUMN_CUSTOMERID_CUSTOMERID_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(customerId);
+
+				count = (Long)q.uniqueResult();
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_CUSTOMERID_CUSTOMERID_2 = "customerService.customerId = ?";
 
 	public CustomerServicePersistenceImpl() {
 		setModelClass(CustomerService.class);
@@ -280,6 +777,8 @@ public class CustomerServicePersistenceImpl extends BasePersistenceImpl<Customer
 
 		boolean isNew = customerService.isNew();
 
+		CustomerServiceModelImpl customerServiceModelImpl = (CustomerServiceModelImpl)customerService;
+
 		Session session = null;
 
 		try {
@@ -303,8 +802,29 @@ public class CustomerServicePersistenceImpl extends BasePersistenceImpl<Customer
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew) {
+		if (isNew || !CustomerServiceModelImpl.COLUMN_BITMASK_ENABLED) {
 			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else {
+			if ((customerServiceModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CUSTOMERID.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						customerServiceModelImpl.getOriginalCustomerId()
+					};
+
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CUSTOMERID,
+					args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CUSTOMERID,
+					args);
+
+				args = new Object[] { customerServiceModelImpl.getCustomerId() };
+
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CUSTOMERID,
+					args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CUSTOMERID,
+					args);
+			}
 		}
 
 		EntityCacheUtil.putResult(CustomerServiceModelImpl.ENTITY_CACHE_ENABLED,
@@ -645,9 +1165,12 @@ public class CustomerServicePersistenceImpl extends BasePersistenceImpl<Customer
 	}
 
 	private static final String _SQL_SELECT_CUSTOMERSERVICE = "SELECT customerService FROM CustomerService customerService";
+	private static final String _SQL_SELECT_CUSTOMERSERVICE_WHERE = "SELECT customerService FROM CustomerService customerService WHERE ";
 	private static final String _SQL_COUNT_CUSTOMERSERVICE = "SELECT COUNT(customerService) FROM CustomerService customerService";
+	private static final String _SQL_COUNT_CUSTOMERSERVICE_WHERE = "SELECT COUNT(customerService) FROM CustomerService customerService WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "customerService.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No CustomerService exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No CustomerService exists with the key {";
 	private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(
 				PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
 	private static Log _log = LogFactoryUtil.getLog(CustomerServicePersistenceImpl.class);

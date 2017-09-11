@@ -83,7 +83,11 @@ public class CustomerServiceModelImpl extends BaseModelImpl<CustomerService>
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.finder.cache.enabled.com.vt.portlet.camera.model.CustomerService"),
 			true);
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+				"value.object.column.bitmask.enabled.com.vt.portlet.camera.model.CustomerService"),
+			true);
+	public static long CUSTOMERID_COLUMN_BITMASK = 1L;
+	public static long CUSTOMERSERVICEID_COLUMN_BITMASK = 2L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.vt.portlet.camera.model.CustomerService"));
 
@@ -218,7 +222,19 @@ public class CustomerServiceModelImpl extends BaseModelImpl<CustomerService>
 
 	@Override
 	public void setCustomerId(long customerId) {
+		_columnBitmask |= CUSTOMERID_COLUMN_BITMASK;
+
+		if (!_setOriginalCustomerId) {
+			_setOriginalCustomerId = true;
+
+			_originalCustomerId = _customerId;
+		}
+
 		_customerId = customerId;
+	}
+
+	public long getOriginalCustomerId() {
+		return _originalCustomerId;
 	}
 
 	@Override
@@ -321,6 +337,10 @@ public class CustomerServiceModelImpl extends BaseModelImpl<CustomerService>
 		_accountType = accountType;
 	}
 
+	public long getColumnBitmask() {
+		return _columnBitmask;
+	}
+
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
@@ -408,6 +428,13 @@ public class CustomerServiceModelImpl extends BaseModelImpl<CustomerService>
 
 	@Override
 	public void resetOriginalValues() {
+		CustomerServiceModelImpl customerServiceModelImpl = this;
+
+		customerServiceModelImpl._originalCustomerId = customerServiceModelImpl._customerId;
+
+		customerServiceModelImpl._setOriginalCustomerId = false;
+
+		customerServiceModelImpl._columnBitmask = 0;
 	}
 
 	@Override
@@ -557,6 +584,8 @@ public class CustomerServiceModelImpl extends BaseModelImpl<CustomerService>
 		};
 	private long _customerServiceId;
 	private long _customerId;
+	private long _originalCustomerId;
+	private boolean _setOriginalCustomerId;
 	private String _deployName;
 	private Date _appointDate;
 	private long _serviceType;
@@ -565,5 +594,6 @@ public class CustomerServiceModelImpl extends BaseModelImpl<CustomerService>
 	private String _packageType;
 	private String _isdnNo;
 	private long _accountType;
+	private long _columnBitmask;
 	private CustomerService _escapedModel;
 }

@@ -2,6 +2,8 @@ package com.vt.portlet.camera.controller;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.vt.portlet.camera.model.Customer;
@@ -30,7 +33,29 @@ public class ActionController {
 	private static final Log _log = LogFactoryUtil.getLog(ActionController.class);
 
 	@RenderMapping
-	public String renderHomePage() {
+	public String renderHomePage(RenderRequest renderRequest,
+			RenderResponse renderResponse) {
+		System.out.println("view default page");
+		
+		return "view";
+	}
+	
+	@RequestMapping(params="action=defaultView")
+	public String defaultViewPage(RenderRequest renderRequest,
+			RenderResponse renderResponse) {
+		System.out.println("defaultViewPage");
+		
+		SessionErrors.add(renderRequest, "action-error");
+		return "view";
+	}
+	
+	@RequestMapping(params="action=viewAction")
+	public String viewPage(RenderRequest renderRequest,
+			RenderResponse renderResponse) throws Exception {
+		
+		SessionMessages.add(renderRequest, "add-success");
+		System.out.println("viewActionPage:");
+		
 		return "view";
 	}
 
@@ -78,6 +103,7 @@ public class ActionController {
 		CustomerServiceLocalServiceUtil.addCustomerService(customerService);
 
 		SessionMessages.add(actionRequest, "add-success");
-
+		SessionErrors.add(actionRequest, "action-error");
+		actionResponse.setRenderParameter("action", "defaultView");
 	}
 }

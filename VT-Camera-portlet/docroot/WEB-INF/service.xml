@@ -35,5 +35,10 @@
 		<column name="packageType" type="String"></column>
 		<column name="isdnNo" type="String"></column>
 		<column name="accountType" type="long"></column>
+		
+		<finder name="customerId" return-type="Collection">
+			<finder-column name="customerId"></finder-column>
+		</finder>
+		
 	</entity>
 </service-builder>

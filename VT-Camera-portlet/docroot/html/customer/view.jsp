@@ -1,11 +1,39 @@
+<%@page import="com.liferay.portal.kernel.util.CalendarFactoryUtil"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="com.vt.portlet.camera.service.CustomerLocalServiceUtil"%>
+<%@page import="com.vt.portlet.camera.model.Customer"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
 <%@ include file="../init.jsp" %>
 
+<%
+List<Customer> lstCustomer = CustomerLocalServiceUtil.getCustomers(-1, -1);
+System.out.println("lst size :"+lstCustomer.size());
 
+Calendar issueDate = CalendarFactoryUtil.getCalendar(timeZone,
+		locale);
+
+%>
+
+<portlet:resourceURL id="getSelectedCustomer" var="getSelectedCustomerURL">
+</portlet:resourceURL>
 <aui:form action="" method="post" name="fm">
 
+	<aui:row>
+		<aui:col span="8">
+			<aui:select name="customerService" label="Chọn khách hàng" onChange="getCustomerService()">
+				<%
+					for(Customer customer : lstCustomer) {
+				%>
+						<aui:option label="<%= customer.getFullName() %>" value="<%= customer.getCustomerId() %>" />
+				<%						
+					}
+				%>
+			</aui:select>
+		</aui:col>
+	</aui:row>
 	<aui:row>
 		<aui:col span="4">
 			<aui:select name="customerGroup" label="Nhóm loại khách hàng" >
@@ -31,8 +59,12 @@
 		</aui:col>
 		<aui:col span="4">
 			<aui:field-wrapper label="Ngày cấp">
-				<liferay-ui:input-date name="issueDate" >
-				</liferay-ui:input-date>
+				<liferay-ui:input-date name="issueDate"
+					dayParam="issueDateDay" dayValue="<%=issueDate.get(Calendar.DATE)%>"
+					monthParam="issueDateMonth" monthValue="<%=issueDate.get(Calendar.MONTH)%>"
+					yearParam="issueDateYear" yearValue="<%=issueDate.get(Calendar.YEAR)%>"
+					firstDayOfWeek="<%=issueDate.getFirstDayOfWeek() - 1%>"
+				/>
 			</aui:field-wrapper>
 		</aui:col>
 	</aui:row>
@@ -42,7 +74,14 @@
 			<aui:input name="fullName" label="Tên khách hàng" />
 		</aui:col>
 		<aui:col span="4">
-			<aui:input name="birthday" label="Ngày sinh" />
+			<aui:field-wrapper label="Ngày sinh">
+				<liferay-ui:input-date name="birthday"
+					dayParam="issueDateDay" dayValue="<%=issueDate.get(Calendar.DATE)%>"
+					monthParam="issueDateMonth" monthValue="<%=issueDate.get(Calendar.MONTH)%>"
+					yearParam="issueDateYear" yearValue="<%=issueDate.get(Calendar.YEAR)%>"
+					firstDayOfWeek="<%=issueDate.getFirstDayOfWeek() - 1%>"
+				/>
+			</aui:field-wrapper>
 		</aui:col>
 		<aui:col span="4">
 			<aui:select name="sex" label="Giới tính" >
@@ -133,5 +172,23 @@ function <portlet:namespace />checkValidate(formObj) {
 	Liferay.fire('_callBackAction', {
 			customerData : responsedata
 	});
+function getCustomerService() {
+	var sel = document.getElementById("<portlet:namespace/>customerService");
+   	var customerId = sel.options[sel.selectedIndex].value;
+   	console.log("customerId :"+customerId);
+   	
+   	$.ajax({
+		url:'<%= getSelectedCustomerURL %>',
+		dataType: "json",
+		data:{
+			<portlet:namespace />customerId: customerId
+		},
+		type: "get",
+		success: function(data){
+			//Firing the event.
+			Liferay.fire('setCustomerService', {jsonCustomerService:data});
+		}
+	});
+	   
 }
 </aui:script>

@@ -1,10 +1,20 @@
+<%@page import="com.liferay.portal.kernel.util.CalendarFactoryUtil"%>
+<%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ include file="../init.jsp" %>
 
-<aui:form action="" method="post" name="fm">
+<%
+Calendar appointDate = CalendarFactoryUtil.getCalendar(timeZone,
+		locale);
+%>
+<portlet:renderURL var="defaultServiceURL">
+     <param value="controller" name="service">
+</portlet:renderURL>
+ 
+<aui:form action="<%= defaultServiceURL %>" method="post" name="fm">
 
 	<aui:row>
 		<aui:col span="8">
@@ -12,8 +22,12 @@
 		</aui:col>
 		<aui:col span="4">
 			<aui:field-wrapper label="Ngày hẹn lắp đặt">
-				<liferay-ui:input-date name="appointDate" >
-				</liferay-ui:input-date>
+				<liferay-ui:input-date name="appointDate"
+					dayParam="appointDateDay" dayValue="<%=appointDate.get(Calendar.DATE)%>"
+					monthParam="appointDateMonth" monthValue="<%=appointDate.get(Calendar.MONTH)%>"
+					yearParam="appointDateYear" yearValue="<%=appointDate.get(Calendar.YEAR)%>"
+					firstDayOfWeek="<%=appointDate.getFirstDayOfWeek() - 1%>"
+				/>
 			</aui:field-wrapper>
 		</aui:col>
 
@@ -83,27 +97,35 @@ Liferay.on('_submitAction',function(event) {
 			selectText: true,
 
 			rules: {
+				<portlet:namespace />deployName: {
+					required: true
+				},
 				<portlet:namespace />address: {
 					required: true
-				},
-				<portlet:namespace />customerGroup: {
-					required: true
-				},
-				<portlet:namespace />packageType: {
-					required: true
 				}
+// 				,
+// 				<portlet:namespace />customerGroup: {
+// 					required: true
+// 				},
+// 				<portlet:namespace />packageType: {
+// 					required: true
+// 				}
 			},
 
 			fieldStrings: {
+				<portlet:namespace />deployName: {
+					required: 'Bạn phải nhập tên nhân viên triển khai'
+				},
 				<portlet:namespace />address: {
 					required: 'Bạn phải nhập địa chỉ triển khai'
-				},
-				<portlet:namespace />customerGroup: {
-					required: 'Bạn phải chọn hình thức triển khai'
-				},
-				<portlet:namespace />packageType: {
-					required: 'Bạn phải nhập gói cước'
 				}
+// 				,
+// 				<portlet:namespace />customerGroup: {
+// 					required: 'Bạn phải chọn hình thức triển khai'
+// 				},
+// 				<portlet:namespace />packageType: {
+// 					required: 'Bạn phải nhập gói cước'
+// 				}
 			}
 
 		});
@@ -152,6 +174,14 @@ function <portlet:namespace />checkValidate(formObj) {
 			serviceData : responsedata
 	});
 
-}
+Liferay.on('setCustomerService',function(event) {
+	console.log("on setCustomerService");
+	var obj = event.jsonCustomerService;
+	if(obj != 'undefined' && obj != null && obj != "") {
+		console.log("deployName :"+obj.deployName);		
+		document.<portlet:namespace />fm.<portlet:namespace />deployName.value = obj.deployName ;
+		document.<portlet:namespace />fm.<portlet:namespace />address.value = obj.address ;
+	}
+});
 
 </aui:script>
