@@ -19,6 +19,7 @@
 	<portlet>
 		<portlet-name>VT-Action</portlet-name>
 		<icon>/icon.png</icon>
+		<configuration-action-class>com.vt.portlet.camera.action.configuration.ConfigurationImpl</configuration-action-class>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 		<css-class-wrapper>VT-Camera-portlet</css-class-wrapper>

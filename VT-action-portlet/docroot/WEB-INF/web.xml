@@ -17,7 +17,7 @@
 		
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/actionContext.xml</param-value>
+		<param-value>/WEB-INF/cameraContext.xml</param-value>
 	</context-param>
 	
 </web-app>

@@ -108,25 +108,50 @@ Liferay.on('_submitAction',function(event) {
 
 		});
 
-// 		validator1.validate();
-
-		if(validator1.hasErrors()){
+ 		validator1.validate();
+ 		
+ 		var formObj = $('#<portlet:namespace/>fm');
+ 		
+ 		if(validator1.hasErrors()){
 			event.halt();
 		}
 		else {
-		 	var data = $('#<portlet:namespace/>fm').serializeArray().reduce(function(obj, item) {
-		 	    obj[item.name] = item.value;
-		 	    return obj;
-		 	}, {});
-
-			Liferay.fire('_callBackAction', {
-	 			service_form : data,
-	 			service_namespace : '<portlet:namespace/>'
-	 		});
+			<portlet:namespace />checkValidate(formObj);
 		}
+
+// 		if(validator1.hasErrors()){
+// 			event.halt();
+// 		}
+// 		else {
+// 		 	var data = $('#<portlet:namespace/>fm').serializeArray().reduce(function(obj, item) {
+// 		 	    obj[item.name] = item.value;
+// 		 	    return obj;
+// 		 	}, {});
+
+// 			Liferay.fire('_callBackAction', {
+// 	 			service_form : data,
+// 	 			service_namespace : '<portlet:namespace/>'
+// 	 		});
+// 		}
 
 	});
 
 });
+
+function <portlet:namespace />checkValidate(formObj) {
+	var data = formObj.serializeArray().reduce(function(obj, item) {
+ 	    obj[item.name] = item.value;
+ 	    return obj;
+ 	}, {});
+	
+	var responsedata = {};
+	
+	responsedata.data = data;
+	responsedata.namespace = '<portlet:namespace/>';
+	Liferay.fire('_callBackAction', {
+			serviceData : responsedata
+	});
+
+}
 
 </aui:script>

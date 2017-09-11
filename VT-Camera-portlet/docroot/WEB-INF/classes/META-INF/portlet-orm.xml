@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd">
+	<persistence-unit-metadata>
+		<xml-mapping-metadata-complete/>
+		<persistence-unit-defaults>
+			<access>PROPERTY</access>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+	<mapped-superclass class="com.vt.portlet.camera.model.impl.CustomerModelImpl">
+		<attributes>
+			<id name="customerId" />
+			<basic name="customerGroup" />
+			<basic name="customerType" />
+			<basic name="fullName" />
+			<basic name="birthday">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="sex" />
+			<basic name="nationalId" />
+			<basic name="address" />
+			<basic name="description" />
+			<basic name="identifyNo" />
+			<basic name="issueDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="issuePlace" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.vt.portlet.camera.model.impl.CustomerServiceModelImpl">
+		<attributes>
+			<id name="customerServiceId" />
+			<basic name="customerId" />
+			<basic name="deployName" />
+			<basic name="appointDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="serviceType" />
+			<basic name="address" />
+			<basic name="deployType" />
+			<basic name="packageType" />
+			<basic name="isdnNo" />
+			<basic name="accountType" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<entity class="com.vt.portlet.camera.model.impl.CustomerImpl" name="Customer">
+		<table name="vt_Customer" />
+		<attributes />
+	</entity>
+	<entity class="com.vt.portlet.camera.model.impl.CustomerServiceImpl" name="CustomerService">
+		<table name="vt_Customer_service" />
+		<attributes />
+	</entity>
+</entity-mappings>

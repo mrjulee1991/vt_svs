@@ -226,7 +226,6 @@ public abstract class CustomerServiceLocalServiceBaseImpl
 	 * @throws PortalException if a customer service with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
-	@Override
 	public CustomerService getCustomerService(long customerServiceId)
 		throws PortalException, SystemException {
 		return customerServicePersistence.findByPrimaryKey(customerServiceId);

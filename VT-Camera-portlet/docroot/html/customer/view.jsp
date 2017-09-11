@@ -107,24 +107,31 @@ Liferay.on('_submitAction',function(event) {
 		});
 
 		validator1.validate();
-
+		
+		var formObj = $('#<portlet:namespace/>fm');
 		if(validator1.hasErrors()){
 			event.halt();
 		}
 		else {
-		 	var data = $('#<portlet:namespace/>fm').serializeArray().reduce(function(obj, item) {
-		 	    obj[item.name] = item.value;
-		 	    return obj;
-		 	}, {});
-
-			Liferay.fire('_callBackAction', {
-	 			customer_form : data,
-	 			customer_namespace : '<portlet:namespace/>'
-	 		});
+			<portlet:namespace />checkValidate(formObj);
 		}
 
 	});
 
 });
 
+
+function <portlet:namespace />checkValidate(formObj) {
+	var data = formObj.serializeArray().reduce(function(obj, item) {
+ 	    obj[item.name] = item.value;
+ 	    return obj;
+ 	}, {});
+	
+	var responsedata = {};
+	responsedata.data = data;
+	responsedata.namespace = '<portlet:namespace />';
+	Liferay.fire('_callBackAction', {
+			customerData : responsedata
+	});
+}
 </aui:script>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false" auto-import="false">
+	<import class="com.vt.portlet.camera.model.Customer" />
+	<import class="com.vt.portlet.camera.model.CustomerService" />
+	<class name="com.vt.portlet.camera.model.impl.CustomerImpl" table="vt_Customer">
+		<cache usage="read-write" />
+		<id name="customerId" type="long">
+			<generator class="increment" />
+		</id>
+		<property name="customerGroup" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="customerType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="fullName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="birthday" type="org.hibernate.type.TimestampType" />
+		<property name="sex" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="nationalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="address" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="identifyNo" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="issueDate" type="org.hibernate.type.TimestampType" />
+		<property name="issuePlace" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.vt.portlet.camera.model.impl.CustomerServiceImpl" table="vt_Customer_service">
+		<cache usage="read-write" />
+		<id name="customerServiceId" type="long">
+			<generator class="increment" />
+		</id>
+		<property name="customerId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="deployName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="appointDate" type="org.hibernate.type.TimestampType" />
+		<property name="serviceType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="address" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="deployType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="packageType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="isdnNo" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="accountType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+</hibernate-mapping>

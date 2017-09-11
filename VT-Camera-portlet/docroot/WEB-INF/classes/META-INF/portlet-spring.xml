@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="com.vt.portlet.camera.service.CustomerLocalService" class="com.vt.portlet.camera.service.impl.CustomerLocalServiceImpl" />
+	<bean id="com.vt.portlet.camera.service.persistence.CustomerPersistence" class="com.vt.portlet.camera.service.persistence.CustomerPersistenceImpl" parent="basePersistence">
+		<property name="dataSource" ref="vtDataSource" />
+		<property name="sessionFactory" ref="vtSessionFactory" />
+	</bean>
+	<bean id="com.vt.portlet.camera.service.CustomerServiceLocalService" class="com.vt.portlet.camera.service.impl.CustomerServiceLocalServiceImpl" />
+	<bean id="com.vt.portlet.camera.service.persistence.CustomerServicePersistence" class="com.vt.portlet.camera.service.persistence.CustomerServicePersistenceImpl" parent="basePersistence">
+		<property name="dataSource" ref="vtDataSource" />
+		<property name="sessionFactory" ref="vtSessionFactory" />
+	</bean>
+</beans>
