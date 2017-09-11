@@ -111,6 +111,171 @@ public class CustomerServiceUtil {
 	}
 
 	/**
+	* Returns all the customer services where customerId = &#63;.
+	*
+	* @param customerId the customer ID
+	* @return the matching customer services
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<com.vt.portlet.camera.model.CustomerService> findBycustomerId(
+		long customerId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().findBycustomerId(customerId);
+	}
+
+	/**
+	* Returns a range of all the customer services where customerId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.vt.portlet.camera.model.impl.CustomerServiceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param customerId the customer ID
+	* @param start the lower bound of the range of customer services
+	* @param end the upper bound of the range of customer services (not inclusive)
+	* @return the range of matching customer services
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<com.vt.portlet.camera.model.CustomerService> findBycustomerId(
+		long customerId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().findBycustomerId(customerId, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the customer services where customerId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.vt.portlet.camera.model.impl.CustomerServiceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param customerId the customer ID
+	* @param start the lower bound of the range of customer services
+	* @param end the upper bound of the range of customer services (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching customer services
+	* @throws SystemException if a system exception occurred
+	*/
+	public static java.util.List<com.vt.portlet.camera.model.CustomerService> findBycustomerId(
+		long customerId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence()
+				   .findBycustomerId(customerId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns the first customer service in the ordered set where customerId = &#63;.
+	*
+	* @param customerId the customer ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching customer service
+	* @throws com.vt.portlet.camera.NoSuchCustomerServiceException if a matching customer service could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.vt.portlet.camera.model.CustomerService findBycustomerId_First(
+		long customerId,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.vt.portlet.camera.NoSuchCustomerServiceException {
+		return getPersistence()
+				   .findBycustomerId_First(customerId, orderByComparator);
+	}
+
+	/**
+	* Returns the first customer service in the ordered set where customerId = &#63;.
+	*
+	* @param customerId the customer ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching customer service, or <code>null</code> if a matching customer service could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.vt.portlet.camera.model.CustomerService fetchBycustomerId_First(
+		long customerId,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence()
+				   .fetchBycustomerId_First(customerId, orderByComparator);
+	}
+
+	/**
+	* Returns the last customer service in the ordered set where customerId = &#63;.
+	*
+	* @param customerId the customer ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching customer service
+	* @throws com.vt.portlet.camera.NoSuchCustomerServiceException if a matching customer service could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.vt.portlet.camera.model.CustomerService findBycustomerId_Last(
+		long customerId,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.vt.portlet.camera.NoSuchCustomerServiceException {
+		return getPersistence()
+				   .findBycustomerId_Last(customerId, orderByComparator);
+	}
+
+	/**
+	* Returns the last customer service in the ordered set where customerId = &#63;.
+	*
+	* @param customerId the customer ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching customer service, or <code>null</code> if a matching customer service could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.vt.portlet.camera.model.CustomerService fetchBycustomerId_Last(
+		long customerId,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence()
+				   .fetchBycustomerId_Last(customerId, orderByComparator);
+	}
+
+	/**
+	* Returns the customer services before and after the current customer service in the ordered set where customerId = &#63;.
+	*
+	* @param customerServiceId the primary key of the current customer service
+	* @param customerId the customer ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next customer service
+	* @throws com.vt.portlet.camera.NoSuchCustomerServiceException if a customer service with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.vt.portlet.camera.model.CustomerService[] findBycustomerId_PrevAndNext(
+		long customerServiceId, long customerId,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.vt.portlet.camera.NoSuchCustomerServiceException {
+		return getPersistence()
+				   .findBycustomerId_PrevAndNext(customerServiceId, customerId,
+			orderByComparator);
+	}
+
+	/**
+	* Removes all the customer services where customerId = &#63; from the database.
+	*
+	* @param customerId the customer ID
+	* @throws SystemException if a system exception occurred
+	*/
+	public static void removeBycustomerId(long customerId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		getPersistence().removeBycustomerId(customerId);
+	}
+
+	/**
+	* Returns the number of customer services where customerId = &#63;.
+	*
+	* @param customerId the customer ID
+	* @return the number of matching customer services
+	* @throws SystemException if a system exception occurred
+	*/
+	public static int countBycustomerId(long customerId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().countBycustomerId(customerId);
+	}
+
+	/**
 	* Caches the customer service in the entity cache if it is enabled.
 	*
 	* @param customerService the customer service

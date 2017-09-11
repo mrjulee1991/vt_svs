@@ -273,6 +273,13 @@ public class CustomerServiceLocalServiceWrapper
 			arguments);
 	}
 
+	@Override
+	public java.util.List<com.vt.portlet.camera.model.CustomerService> findBycustomerId(
+		long customerId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _customerServiceLocalService.findBycustomerId(customerId);
+	}
+
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */

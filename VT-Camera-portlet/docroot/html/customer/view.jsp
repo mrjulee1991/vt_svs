@@ -122,12 +122,6 @@ Liferay.on('_submitAction',function(event) {
 					required: true,
 					number: true
 				}
-// 				<portlet:namespace />issuePlace: {
-// 					required: true
-// 				},
-// 				<portlet:namespace />issueDate: {
-// 					required: true
-// 				}
 			},
 
 			fieldStrings: {
@@ -135,12 +129,6 @@ Liferay.on('_submitAction',function(event) {
 					required: 'Bạn phải nhập số CMT',
 					number: 'Chỉ dc nhập số'
 				}
-// 				<portlet:namespace />issuePlace: {
-// 					required: 'Bạn phải nhập nơi cấp CMT'
-// 				},
-// 				<portlet:namespace />issueDate: {
-// 					required: 'Bạn phải nhập ngày cấp CMT'
-// 				}
 			}
 
 		});
@@ -165,13 +153,14 @@ function <portlet:namespace />checkValidate(formObj) {
  	    obj[item.name] = item.value;
  	    return obj;
  	}, {});
-	
 	var responsedata = {};
-	responsedata.data = data;
+	responsedata.formData = data;
 	responsedata.namespace = '<portlet:namespace />';
 	Liferay.fire('_callBackAction', {
 			customerData : responsedata
 	});
+	
+}
 function getCustomerService() {
 	var sel = document.getElementById("<portlet:namespace/>customerService");
    	var customerId = sel.options[sel.selectedIndex].value;

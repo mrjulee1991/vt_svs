@@ -103,13 +103,6 @@ Liferay.on('_submitAction',function(event) {
 				<portlet:namespace />address: {
 					required: true
 				}
-// 				,
-// 				<portlet:namespace />customerGroup: {
-// 					required: true
-// 				},
-// 				<portlet:namespace />packageType: {
-// 					required: true
-// 				}
 			},
 
 			fieldStrings: {
@@ -119,13 +112,6 @@ Liferay.on('_submitAction',function(event) {
 				<portlet:namespace />address: {
 					required: 'Bạn phải nhập địa chỉ triển khai'
 				}
-// 				,
-// 				<portlet:namespace />customerGroup: {
-// 					required: 'Bạn phải chọn hình thức triển khai'
-// 				},
-// 				<portlet:namespace />packageType: {
-// 					required: 'Bạn phải nhập gói cước'
-// 				}
 			}
 
 		});
@@ -140,22 +126,6 @@ Liferay.on('_submitAction',function(event) {
 		else {
 			<portlet:namespace />checkValidate(formObj);
 		}
-
-// 		if(validator1.hasErrors()){
-// 			event.halt();
-// 		}
-// 		else {
-// 		 	var data = $('#<portlet:namespace/>fm').serializeArray().reduce(function(obj, item) {
-// 		 	    obj[item.name] = item.value;
-// 		 	    return obj;
-// 		 	}, {});
-
-// 			Liferay.fire('_callBackAction', {
-// 	 			service_form : data,
-// 	 			service_namespace : '<portlet:namespace/>'
-// 	 		});
-// 		}
-
 	});
 
 });
@@ -168,12 +138,12 @@ function <portlet:namespace />checkValidate(formObj) {
 	
 	var responsedata = {};
 	
-	responsedata.data = data;
+	responsedata.formData = data;
 	responsedata.namespace = '<portlet:namespace/>';
 	Liferay.fire('_callBackAction', {
 			serviceData : responsedata
 	});
-
+}
 Liferay.on('setCustomerService',function(event) {
 	console.log("on setCustomerService");
 	var obj = event.jsonCustomerService;

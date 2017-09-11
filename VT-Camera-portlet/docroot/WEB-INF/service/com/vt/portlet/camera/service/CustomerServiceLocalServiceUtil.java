@@ -260,6 +260,12 @@ public class CustomerServiceLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
+	public static java.util.List<com.vt.portlet.camera.model.CustomerService> findBycustomerId(
+		long customerId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().findBycustomerId(customerId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

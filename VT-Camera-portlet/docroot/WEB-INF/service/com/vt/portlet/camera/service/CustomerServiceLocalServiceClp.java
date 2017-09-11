@@ -111,6 +111,10 @@ public class CustomerServiceLocalServiceClp
 		_methodName16 = "setBeanIdentifier";
 
 		_methodParameterTypes16 = new String[] { "java.lang.String" };
+
+		_methodName18 = "findBycustomerId";
+
+		_methodParameterTypes18 = new String[] { "long" };
 	}
 
 	@Override
@@ -629,6 +633,35 @@ public class CustomerServiceLocalServiceClp
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public java.util.List<com.vt.portlet.camera.model.CustomerService> findBycustomerId(
+		long customerId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18, new Object[] { customerId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.vt.portlet.camera.model.CustomerService>)ClpSerializer.translateOutput(returnObj);
+	}
+
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -664,4 +697,6 @@ public class CustomerServiceLocalServiceClp
 	private String[] _methodParameterTypes15;
 	private String _methodName16;
 	private String[] _methodParameterTypes16;
+	private String _methodName18;
+	private String[] _methodParameterTypes18;
 }

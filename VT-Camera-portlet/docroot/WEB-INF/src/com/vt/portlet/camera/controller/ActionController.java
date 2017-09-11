@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.vt.portlet.camera.model.Customer;
 import com.vt.portlet.camera.model.CustomerService;
 import com.vt.portlet.camera.model.impl.CustomerImpl;
@@ -64,46 +65,70 @@ public class ActionController {
 			ActionResponse actionResponse) throws JSONException, SystemException {
 
 		System.out.println("submitForm ...");
+		
+		Customer customer = new CustomerImpl();
 
 		// Customer
-		String customer_namespace = ParamUtil.get(actionRequest, "customer_namespace", "");
-		String customer_form = ParamUtil.get(actionRequest, "customer_form", "");
+		String customerData = ParamUtil.get(actionRequest, "customerData", "");
+		
+		System.out.println("customerData ..." + customerData);
+		
+		if(Validator.isNotNull(customerData)) {
+			
+			JSONObject dataJSONCustomer = JSONFactoryUtil.createJSONObject(customerData.toString());
+			
+			String customer_namespace = dataJSONCustomer.getString("namespace");
 
-		JSONObject jsonCustomer = JSONFactoryUtil.createJSONObject(customer_form.toString());
-		String identifyNo = jsonCustomer.getString(customer_namespace+"identifyNo");
-		String issuePlace = jsonCustomer.getString(customer_namespace+"issuePlace");
-		String fullName = jsonCustomer.getString(customer_namespace+"fullName");
-		System.out.println("customer cmt :"+identifyNo);
+			JSONObject jsonCustomer = dataJSONCustomer.getJSONObject("formData");
+			
+			if(Validator.isNotNull(jsonCustomer) && Validator.isNotNull(customer_namespace)) {
+				String identifyNo = jsonCustomer.getString(customer_namespace+"identifyNo");
+				String issuePlace = jsonCustomer.getString(customer_namespace+"issuePlace");
+				String fullName = jsonCustomer.getString(customer_namespace+"fullName");
+				
+				System.out.println("customer cmt :"+identifyNo);
 
-		Customer customer = new CustomerImpl();
-		customer.setIdentifyNo(identifyNo);
-		customer.setIssuePlace(issuePlace);
-		customer.setFullName(fullName);
+				customer.setIdentifyNo(identifyNo);
+				customer.setIssuePlace(issuePlace);
+				customer.setFullName(fullName);
 
-		CustomerLocalServiceUtil.addCustomer(customer);
+				CustomerLocalServiceUtil.addCustomer(customer);
+			}
+			
+		}
+		
 
 		// Service
-		String service_namespace = ParamUtil.get(actionRequest, "service_namespace", "");
-		String service_form = ParamUtil.get(actionRequest, "service_form", "");
+		String serviceData = ParamUtil.get(actionRequest, "serviceData", "");
+		
+		System.out.println("serviceData ..." + serviceData);
+		
+		if(Validator.isNotNull(serviceData)) {
+			
+			JSONObject dataJSONService = JSONFactoryUtil.createJSONObject(serviceData.toString());
+			String service_namespace = dataJSONService.getString("namespace");
+			JSONObject jsonService = dataJSONService.getJSONObject("formData");
+			
+			String deployName = jsonService.getString(service_namespace+"deployName");
+			String serviceType = jsonService.getString(service_namespace+"serviceType");
+			String address = jsonService.getString(service_namespace+"address");
+			System.out.println("service deployName :"+deployName);
 
-		JSONObject jsonService = JSONFactoryUtil.createJSONObject(service_form.toString());
-		String deployName = jsonService.getString(service_namespace+"deployName");
-		String serviceType = jsonService.getString(service_namespace+"serviceType");
-		String address = jsonService.getString(service_namespace+"address");
-		System.out.println("service deployName :"+deployName);
+			CustomerService customerService = new CustomerServiceImpl();
+			customerService.setDeployName(deployName);
+			if(serviceType != null && !"".equals(serviceType)) {
+				customerService.setServiceType(Long.valueOf(serviceType));
+			}
+			customerService.setAddress(address);
+			customerService.setCustomerId(customer.getCustomerId());
 
-		CustomerService customerService = new CustomerServiceImpl();
-		customerService.setDeployName(deployName);
-		if(serviceType != null && !"".equals(serviceType)) {
-			customerService.setServiceType(Long.valueOf(serviceType));
+			CustomerServiceLocalServiceUtil.addCustomerService(customerService);
+
+			SessionMessages.add(actionRequest, "add-success");
+			SessionErrors.add(actionRequest, "action-error");
+			actionResponse.setRenderParameter("action", "defaultView");
+			
 		}
-		customerService.setAddress(address);
-		customerService.setCustomerId(customer.getCustomerId());
 
-		CustomerServiceLocalServiceUtil.addCustomerService(customerService);
-
-		SessionMessages.add(actionRequest, "add-success");
-		SessionErrors.add(actionRequest, "action-error");
-		actionResponse.setRenderParameter("action", "defaultView");
 	}
 }

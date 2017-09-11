@@ -19,28 +19,22 @@
 
 
  <aui:script>
-
- 	var customer_form;
-	var customer_namespace;
-	var service_form;
-	var service_namespace;
 	
+	// temp
 	var portletActivesTemp = [];
 	
+	// hardcode 
+	var customerDataHardCode = {};
+	var serviceDataHardCode = {};
 	function <portlet:namespace />processAction() {
 
 		Liferay.fire('_submitAction', {});
 		
 		//reset parameter value
 		 portletActivesTemp = [];
-// 		 customer_flag = 'false';
-// 		 service_flag = 'false';
 		
-		
-	 	customer_form = "";
-		customer_namespace = "";
-		service_form = "";
-		service_namespace = "";
+		 customerDataHardCode = {};
+		 serviceDataHardCode = {};
 
 	}
 
@@ -54,10 +48,14 @@
 		
 		if(customerData) {
 			portletActivesTemp.push(customerData.namespace);
+			customerDataHardCode = customerData;
+			
 		}
 		
 		if(serviceData) {
 			portletActivesTemp.push(serviceData.namespace);
+			
+			serviceDataHardCode = serviceData;
 		}
 		
 		
@@ -67,8 +65,8 @@
 				$.ajax({
 		 			   url: '<%= updateURL.toString() %>',
 		 			   data: {
-		 			       <portlet:namespace />customer_form : JSON.stringify(customer_form),
-		 			       <portlet:namespace />service_form : JSON.stringify(service_form)
+		 			       <portlet:namespace />customerData : JSON.stringify(customerDataHardCode),
+		 			       <portlet:namespace />serviceData : JSON.stringify(serviceDataHardCode)
 		 			   },
 		 			   error: function() {
 		 			   		console.log("Có lỗi khi gọi hàm ajax");
@@ -82,51 +80,11 @@
 		 			});
 				// reset temp
 				 portletActivesTemp = [];
+				 customerDataHardCode = {};
+				 serviceDataHardCode = {};
 		}
-// 		if(customer_namespace == 'undefined' || customer_namespace == null || customer_namespace == "") {
-// 			customer_form = event.customer_form;
-// 			customer_namespace = event.customer_namespace;
-// 		}
-
-// 		// get data from service form
-// 		if(service_namespace == 'undefined' || service_namespace == null || service_namespace == "") {
-// 			service_form = event.service_form;
-// 			service_namespace = event.service_namespace;
-// 		}
-
-// 		if(customer_namespace != 'undefined' && customer_namespace != null && customer_namespace != "") {
-
-// 			$.ajax({
-// 			   url: '<%= updateURL.toString() %>',
-// 			   data: {
-// 				   <portlet:namespace />customer_namespace : customer_namespace,
-// 			       <portlet:namespace />customer_form : JSON.stringify(customer_form),
-// 				   <portlet:namespace />service_namespace : service_namespace,
-// 			       <portlet:namespace />service_form : JSON.stringify(service_form)
-// 			   },
-// 			   error: function() {
-// 			   		console.log("Có lỗi khi gọi hàm ajax");
-// 			   },
-// 			   dataType: 'jsonp',
-// 			   success: function(data) {
-// 			     	console.log("success");
-// 			     	alert("Submit ajax thành công");
-// 			   },
-// 			   type: 'POST'
-// 			});
-// 		}
 	});
 
-	/* function <portlet:namespace/>validateActionCheck(responseData) {
-		var flag = 'false';
-		if(responseData) {
-			if(responseData.hasError == 'true') {
-				flag = 'true';
-			}
-		}
-		return flag;
-	} */
-	
 	function <portlet:namespace/>compareArr(strArr1, strArr2) {
 		var arrTmp1 = strArr1.split(",");
 		arrTmp1 = arrTmp1.sort();
